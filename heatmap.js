@@ -100,7 +100,7 @@ class HeatMap {
     between(st, ed) {
         this.sensorHeat = [];
         this.sensorData = this.generateData(st, ed);
-        console.log("sensorData:",this.sensorData);
+        console.log("sensorData:", this.sensorData);
         for (var i = 0; i < this.sensors.length; i++) {
             this.sensorHeat.push({
                 location: this.sensors[i].latlng,
@@ -126,7 +126,7 @@ class HeatMap {
         return this.between(this.stDate, this.edDate);
     }
 
-    loop(times,delay) {
+    loop(times, delay) {
         var self = this;
         var cId = setInterval(() => {
             showDate.innerHTML = self.next()[0];
@@ -153,9 +153,16 @@ class HeatMap {
     }
 }
 
+let map, heatmap;
 var sensors = [];
 
-async function main() {
+async function initMap() {
+    map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 20,
+        center: { lat: 24.950829566342414, lng: 121.0299845297313 },
+        mapTypeId: "satellite",
+    });
+
     var files = ['A.csv', 'B.csv', 'C.csv', 'D.csv', 'E.csv', 'F.csv', 'G.csv'];
     var latlng = [
         new google.maps.LatLng(24.950935247696087, 121.02995606742489),
@@ -180,5 +187,5 @@ async function main() {
     heatMap = new HeatMap(map, sensors);
     heatMap.setKey('溫度(°C)');
     heatMap.startDate('2021-12-01 00:00:00', 10 /*min*/);
-    heatMap.loop(10000,500);
+    heatMap.loop(10000, 500);
 }
