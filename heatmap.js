@@ -179,7 +179,6 @@ async function main() {
     }
     heatMap = new HeatMap(map, sensors);
     heatMap.setKey('溫度(°C)');
-    heatMap.startDate('2021-12-10 00:00:00', 10);
-    heatMap.loop(10000,1000);
+    heatMap.startDate('2021-12-01 00:00:00', 10 /*min*/);
+    heatMap.loop(10000,500);
 }
-
