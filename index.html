@@ -6,7 +6,6 @@
   <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
   <link rel="stylesheet" type="text/css" href="./style.css" />
   <script src='./moment.min.js'></script>
-  <script src='./heatmap.js'></script>
   <script src="./index.js"></script>
 </head>
 
@@ -15,10 +14,53 @@
     <h1 id='showDate'></h1>
   </div>
   <div id="map"></div>
-  <script
-   async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBAumQ6sr8JE0p7N3aIrg0hC8WrN4b5Uq4&callback=initMap&libraries=visualization&v=weekly">
+  <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBAumQ6sr8JE0p7N3aIrg0hC8WrN4b5Uq4&callback=initMap&libraries=visualization&v=weekly">
   </script>
+  <script type="text/javascript">
+  let map, heatmap;
+  var sensors = [];
 
+  async function initMap() {
+    map = new google.maps.Map(document.getElementById("map"), {
+      zoom: 19,
+      mapTypeId: "satellite",
+      center: { lat: 22.851209536185973, lng: 120.50718956378738 },
+    });
+
+    var files = ['A.csv', 'B.csv', 'C.csv', 'D.csv', 'E.csv', 'F.csv', 'G.csv'];
+    var latlng = [
+      new google.maps.LatLng(22.850957885872933, 120.5070475735534), //A.csv
+      new google.maps.LatLng(22.85083738238537, 120.50703630060416), //B.csv
+      new google.maps.LatLng(22.850968274099607, 120.50736321613203), //C.csv
+      new google.maps.LatLng(22.850831149443458, 120.50736997990158), //D.csv
+      new google.maps.LatLng(22.850944077991002, 120.50773034793211), //E.csv
+      new google.maps.LatLng(22.850813579772968, 120.50772434403503), //F.csv
+      new google.maps.LatLng(22.850734485131397, 120.50733274152263), //G.csv
+    ];
+    var data = await loadData(files);
+    for (var i = 0; i < data.length; i++) {
+      console.log("create sensor:", files[i]);
+      var sensor = new Sensor(await data[i].text());
+      sensor.latlng = latlng[i];
+      sensors.push(sensor);
+    }
+    heatMap = new HeatMap(map, sensors);
+    heatMap.setKey('溫度(°C)');
+    //heatMap.setKey('土壤溼度');
+    //heatMap.setKey('光度(PAR)');
+    heatMap.startDate('2021-12-01 00:00:00', 5 /*min*/ );
+    heatMap.loop(10000, 500);
+  }
+
+
+  async function loadData(files) {
+    var fetchList = [];
+    for (var i = 0; i < files.length; i++) {
+      fetchList.push(fetch(files[i]));
+    }
+    return await Promise.all(fetchList);
+  }
+  </script>
 </body>
 
 </html>
