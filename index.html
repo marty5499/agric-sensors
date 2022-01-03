@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Heatmaps</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+  <link rel="stylesheet" type="text/css" href="./style.css" />
+  <script src='./moment.min.js'></script>
+  <script src='./heatmap.js'></script>
+  <script src="./index.js"></script>
+</head>
+
+<body>
+  <div id="floating-panel">
+    <button style='display: none;' id="toggle-heatmap">Toggle</button>
+    <button style='display: none;' id="change-gradient">Play</button>
+    <button style='display: none;' id="change-radius">radius</button>
+    <button style='display: none;' id="change-opacity">opacity</button>
+    <h1 id='showDate'></h1>
+  </div>
+  <div id="map"></div>
+  <script
+   async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBAumQ6sr8JE0p7N3aIrg0hC8WrN4b5Uq4&callback=initMap&libraries=visualization&v=weekly">
+  </script>
+
+</body>
+
+</html>
